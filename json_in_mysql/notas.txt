@@ -1,0 +1,112 @@
+folder:http://localhost/JavaScript/Json/json_in_mysql/
+
+
+CREATE TABLE employees (data JSON);
+INSERT INTO employees VALUES ('{"id": 1, "name": "Jane"}');
+INSERT INTO employees VALUES ('{"id": 2, "name": "Joe"}');
+SELECT JSON_EXTRACT(data, "$.name") AS col
+FROM employees
+WHERE JSON_EXTRACT(data, "$.id") > 2
+
+https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-replace
+
+
+https://benjaminlistwon.com/blog/working-with-json-data-in-mysql-part-1-of-3/
+
+
+
+
+
+CREATE TABLE user_tabla (
+
+id int(11) NOT NULL AUTO_INCREMENT,
+  
+nombre varchar(255) NOT NULL,
+  
+posicion varchar(255) NOT NULL,
+  
+ano_inicio int(4) NOT NULL,
+  
+detalles JSON NOT NULL,
+  
+PRIMARY KEY (`id`)
+
+);
+
+
+INSERT INTO user_tabla (nombre,posicion,ano_inicio,detalles) VALUES ('yoshio','operations_manager',2019,'{"id":1,"name":"lolo","edad":99,"descripcion":"sfsdf"}');
+
+INSERT INTO user_tabla (nombre,posicion,ano_inicio,detalles) VALUES ('yoshio','operations_manager',2019,'{"id":2,"name":"lala","edad":88,"descripcion":"dghghf"}');
+
+INSERT INTO user_tabla (nombre,posicion,ano_inicio,detalles) VALUES ('yoshio','operations_manager',2019,'{"id":3,"name":"pepe","edad":99,"descripcion":"wer"}');
+
+INSERT INTO user_tabla (nombre,posicion,ano_inicio,detalles) VALUES ('yoshio','operations_manager',2019,'{"id":4,"name":"caca","edad":88,"descripcion":"nfbhn"}');
+
+
+po_tabla.php para jalar jalar data por maysql row:-------------------------------------------------------------------------------------------------------------
+
+<?php
+//https://www.phpknowhow.com/mysql/mysqli-procedural-functions/
+require_once('../../private/initialize.php');
+
+
+include ("../../db_connection.php");
+$sql = "SELECT detalles FROM user_tabla ";
+$result = mysqli_query($connection, $sql);
+
+ while($row = mysqli_fetch_array($result)) {
+   $json = $row[0];
+   $json_array = json_decode($json,true);
+
+   ChromePhp::log($json_array);
+
+?>
+
+  <tr>
+   <td>
+       <?php echo utf8_encode($json_array["name"]); ?>  <br/>
+
+
+    </td>
+  </tr>
+
+
+ <?php } ?>
+
+
+po_tabla.php para jalar json data en mysql por nivel de dato-------------------------------------------------------------------------------------------------------------
+
+<?php
+//https://www.taniarascia.com/how-to-use-json-data-with-php-or-javascript/
+require_once('../../private/initialize.php');
+
+
+include ("../../db_connection.php");
+$sql = "SELECT detalles FROM user_tabla WHERE id = 3";
+$result = mysqli_query($connection, $sql);
+
+ while($row = mysqli_fetch_array($result)) {
+   $json = $row[0];
+   $json_array = json_decode($json,true);
+
+   //ChromePhp::log($json_array);
+
+   foreach ($json_array as $character => $value) {
+       ChromePhp::log($character);
+      ChromePhp::log($value);
+   }
+?>
+
+  <tr>
+   <td>
+        <?php echo utf8_encode($json_array["descripcion"]); ?>  <br/>
+        <?php
+          foreach ($json_array as $character => $value) {
+               echo utf8_encode($character . '-> '. $value) . '<br/>';
+          }
+        ?>
+    </td>
+  </tr>
+
+
+ <?php } ?>
