@@ -40,9 +40,12 @@ include ("../../db_connection.php");
 
   <tr>
    <td>
-        <!-- <?php echo utf8_encode($json_array["detalles"]); ?>  <br/> -->
+
         <?php
           foreach ($json_array as $character => $value) {
+          //posicion del guion
+          $pos = strpos($character, '-');  ChromePhp::log('numero de la posicion '.$pos);
+          $character = substr($character, 0, $pos); ChromePhp::log('el numbre del key seria '.$character);
                echo utf8_encode($character . '-> '. $value) . '<br/>';
           }
         ?>

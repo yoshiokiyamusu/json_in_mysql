@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function(){
         var $search_val = addForm.querySelector('#inputsearch').value;
 
         var target = document.querySelector('#tablebody');
-        var url = 'public/ajax/searchdos.php?buscar=' + $search_val;
+        var url = 'public/ajax/search.php?buscar=' + $search_val;
 
 
         //crear objeto XMLHttpRequest
